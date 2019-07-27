@@ -5,19 +5,34 @@ import {useForm} from './useForm';
 function App() {
 
 /*
-  Now use your own hook, 'useForm' to be kind of a reducer.  Like useState(), it returns an arr with two
-  items: the state, and an expression where you call the name of the function that's second in its internal
-  usage of useState: [state, stateUpdatingFxn], passing it a new object based on state with whatever override 
-  you want to make.
+ useEffect will be called every time the component renders.  To have it only run if, say, the password changes,
+ pass an array containing values.password. If you pass in two properties, it will run when either of them change.
+ If you pass an empty array, it will only run on first render.  So you can kind of use it like componentWillMount.
+
+ You can return a funnction from the fxn that you pass to useEffect.  This function is a cleanup fxn.
 
 */
-  const [values, handleChange] = useForm({email: '', password: ''});
+  const [values, handleChange] = useForm({
+    email: '', 
+    password: '',
+    firstName: ''
+  });
+
+  useEffect(()=>{
+    console.log("inside useEffect");
+  }, [values.password, values.firstName]);
 
   return (
     <div className="App">
+       <input
+        name='firstName'
+        placeholder='firstName'
+        value={values.firstName}
+        onChange={handleChange}
+      />
       <input
         name='email'
-        type="text"
+        placeholder='glen@glencoe.com'
         value={values.email}
         onChange={handleChange}
       />
@@ -28,7 +43,7 @@ function App() {
         onChange={handleChange}
       />
       <div>
-        <span>{values.email}, {values.password} </span>
+        <span>{values.firstName}, {values.email}, {values.password}  </span>
       </div>
     </div>
   );
