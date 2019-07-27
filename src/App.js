@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {useForm} from './useForm';
 
 
 function App() {
 
-  // You can use more than one useState, which allows you to not have to do any Object assigning stuff.
-  // Ben Awad says the way he decides whether to use one view state that operates on objects or two that each operate on primitives
-  // is: if you're updating both values in the same function, use objects and a single useState.  Otherwise, use two useStates
+/*
+  Now use your own hook, 'useForm' to be kind of a reducer.  Like useState(), it returns an arr with two
+  items: the state, and an expression where you call the name of the function that's second in its internal
+  usage of useState: [state, stateUpdatingFxn], passing it a new object based on state with whatever override 
+  you want to make.
 
+*/
   const [values, handleChange] = useForm({email: '', password: ''});
 
   return (
