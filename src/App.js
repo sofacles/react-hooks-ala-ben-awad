@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import {useForm} from './useForm';
+
 
 function App() {
+
+  // You can use more than one useState, which allows you to not have to do any Object assigning stuff.
+  // Ben Awad says the way he decides whether to use one view state that operates on objects or two that each operate on primitives
+  // is: if you're updating both values in the same function, use objects and a single useState.  Otherwise, use two useStates
+
+  const [values, handleChange] = useForm({email: '', password: ''});
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input
+        name='email'
+        type="text"
+        value={values.email}
+        onChange={handleChange}
+      />
+      <input
+        name='password'
+        type="password" 
+        value={values.password}
+        onChange={handleChange}
+      />
+      <div>
+        <span>{values.email}, {values.password} </span>
+      </div>
     </div>
   );
 }
