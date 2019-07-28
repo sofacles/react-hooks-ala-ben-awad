@@ -27,4 +27,6 @@ export const useFetch = (url) => {
     }, [url])
 
     return state;
+    // Ben said you can (and probably should) also return setState here, but to be careful that you don't
+    // write something that infinitely recurses. 
 }

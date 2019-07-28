@@ -1,16 +1,26 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {useForm} from './useForm';
 import { useFetch } from './useFetch';
 
 function App() {
 
 /*
- You can use a useEffect hook to "watch" something like url and update state (our "data" variable below).
- See useFetch.js
+ Watch count and update localStorage when it changes.
+ But, we don't want to read localStorage every render, so use one of those initialization functions for "expensive"
+ operations.
 */
-
-  const [count, setCount ] = useState(0);
+  const expensiveInitialization = () => {
+    console.log("expensiveInitialization should only be called once")
+    return JSON.parse(localStorage.getItem("count") || 0)
+};
+  const [count, setCount ] = useState(() => expensiveInitialization());
   const { data, loading } = useFetch(`http://numbersapi.com/${count}/trivia`);
+
+  
+
+  useEffect(() => {
+    localStorage.setItem("count", JSON.stringify(count))
+  }, [count]);
  
   const [values, handleChange] = useForm({
     email: '', 
