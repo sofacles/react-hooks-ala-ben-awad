@@ -1,32 +1,34 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {useForm} from './useForm';
-import { Hello } from './Hello';
-
 
 function App() {
 
 /*
- useEffect will be called every time the component renders.  To have it only run if, say, the password changes,
- pass an array containing values.password. If you pass in two properties, it will run when either of them change.
- If you pass an empty array, it will only run on first render.  So you can kind of use it like componentWillMount.
-
- You can return a funnction from the fxn that you pass to useEffect.  This function is a cleanup fxn.
-
+ Here's a practical example of useEffect. Attach mousemove when the component renders, and when 
+ the component gets destroyed (which might not happen here, because we're in the app component) we can
+ detach our eventListener and not leak memory.
 */
+
+  useEffect(() => {
+    const onMouseMove = e => {
+      console.log(e);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+
+    return () => {
+      window.removeEventListener('mouseMove', onMouseMove);
+    };
+  }, []);
+ 
   const [values, handleChange] = useForm({
     email: '', 
     password: '',
     firstName: ''
   });
 
-  const [showHello, setShowHello] = useState(true);
-  
   return (
-
-    
     <div className="App">
-      <button onClick={() => setShowHello(!showHello)}>show Hello</button>
-      { showHello && <Hello /> }
        <input
         name='firstName'
         placeholder='firstName'
