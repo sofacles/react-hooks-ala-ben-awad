@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, {useState} from 'react';
 import {useForm} from './useForm';
+import { Hello } from './Hello';
 
 
 function App() {
@@ -18,12 +19,14 @@ function App() {
     firstName: ''
   });
 
-  useEffect(()=>{
-    console.log("inside useEffect");
-  }, [values.password, values.firstName]);
-
+  const [showHello, setShowHello] = useState(true);
+  
   return (
+
+    
     <div className="App">
+      <button onClick={() => setShowHello(!showHello)}>show Hello</button>
+      { showHello && <Hello /> }
        <input
         name='firstName'
         placeholder='firstName'
@@ -43,7 +46,7 @@ function App() {
         onChange={handleChange}
       />
       <div>
-        <span>{values.firstName}, {values.email}, {values.password}  </span>
+        <span>{values.firstName}, {values.email}, {values.password},  </span>
       </div>
     </div>
   );
