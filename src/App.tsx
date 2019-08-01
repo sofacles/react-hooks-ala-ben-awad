@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
 
   // I'm simplifying things a lot and I'm going to switch to typescript.
 
   const [email, setEmail] = useState('a@b.com');
+
+  useEffect(() => {
+    const onMouseMove = (e : MouseEvent) => console.log(e);
+    window.addEventListener("mousemove", onMouseMove);
+
+    return () => {
+      //console.log("In the cleanup function");
+      window.removeEventListener("mousemove", onMouseMove);
+    }
+  }, []);
 
   return (
     <div className="App">
