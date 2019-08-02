@@ -2,32 +2,42 @@ import React, { useState, useEffect } from 'react';
 
 function App() {
 
-  // I'm simplifying things a lot and I'm going to switch to typescript.
+  const [webResponse, setWebResponse] = useState('');
+  let [count, setCount] = useState(0);
+  let url = `http://numbersapi.com/${count}/trivia`;
 
-  const [email, setEmail] = useState('a@b.com');
+  // useEffect(() => {
+  //   const onMouseMove = (e : MouseEvent) => //console.log(e);
+  //   window.addEventListener("mousemove", onMouseMove);
 
-  useEffect(() => {
-    const onMouseMove = (e : MouseEvent) => console.log(e);
-    window.addEventListener("mousemove", onMouseMove);
+  //   return () => {
+  //     //console.log("In the cleanup function");
+  //     window.removeEventListener("mousemove", onMouseMove);
+  //   }
+  // }, []);
 
-    return () => {
-      //console.log("In the cleanup function");
-      window.removeEventListener("mousemove", onMouseMove);
-    }
-  }, []);
+  useEffect(()=> {
+    console.log("useEffect is called");
+    fetch(url)
+    .then(x => { 
+      console.log(`In the then, I'm getting ${x}`);
+      return x.text();
+    } )
+    .then(y => {
+      setWebResponse(y);
+    });
+  }, [url]);
 
   return (
     <div className="App">
-      <input
-        name='email'
-        type="text"
-        value={email}
-        onChange={(e)=> setEmail(e.target.value)}
-      />
       
       <div>
-        <span>{email} </span>
+        <span>{webResponse} </span>
       </div>
+      <button onClick={() => {
+        setCount((c) => c + 1);
+        console.log(`url is ${url}`);
+      }}>increment</button>
     </div>
   );
 }
