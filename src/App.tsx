@@ -1,38 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useFetch } from './useFetch';
 
 function App() {
 
-  const [webResponse, setWebResponse] = useState('');
   let [count, setCount] = useState(0);
   let url = `http://numbersapi.com/${count}/trivia`;
 
-  // useEffect(() => {
-  //   const onMouseMove = (e : MouseEvent) => //console.log(e);
-  //   window.addEventListener("mousemove", onMouseMove);
-
-  //   return () => {
-  //     //console.log("In the cleanup function");
-  //     window.removeEventListener("mousemove", onMouseMove);
-  //   }
-  // }, []);
-
-  useEffect(()=> {
-    console.log("useEffect is called");
-    fetch(url)
-    .then(x => { 
-      console.log(`In the then, I'm getting ${x}`);
-      return x.text();
-    } )
-    .then(y => {
-      setWebResponse(y);
-    });
-  }, [url]);
+  // ergebnis will be kept live by the useEffect inside the custom hook: useFetch
+  // Note that this expression matches the type I declare as hook in useFetch, but later commented out.  
+  // Maybe it's because it can infer the type of url?  
+  var ergebnis = useFetch(url);
 
   return (
     <div className="App">
-      
       <div>
-        <span>{webResponse} </span>
+        <span>{ergebnis}</span>
       </div>
       <button onClick={() => {
         setCount((c) => c + 1);
