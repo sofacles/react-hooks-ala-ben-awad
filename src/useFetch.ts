@@ -11,8 +11,8 @@ export const useFetch /*: hook*/ = (url: string) => {
     useEffect(()=> {
         setState((s) => {
             return {
-                cargoFromUrl: s.cargoFromUrl,
-                loading: false
+                cargoFromUrl: '',
+                loading: true
             }
         });
 
@@ -23,5 +23,5 @@ export const useFetch /*: hook*/ = (url: string) => {
         });
     }, [url]);
 
-    return state.cargoFromUrl;
+    return state;
 };

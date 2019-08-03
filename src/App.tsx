@@ -9,12 +9,12 @@ function App() {
   // ergebnis will be kept live by the useEffect inside the custom hook: useFetch
   // Note that this expression matches the type I declare as hook in useFetch, but later commented out.  
   // Maybe it's because it can infer the type of url?  
-  var ergebnis = useFetch(url);
+  var {cargoFromUrl, loading } = useFetch(url);
 
   return (
     <div className="App">
       <div>
-        <span>{ergebnis}</span>
+        <span>{ loading ? '...': cargoFromUrl}</span>
       </div>
       <button onClick={() => {
         setCount((c) => c + 1);
