@@ -1,81 +1,48 @@
-import React, { useState } from 'react';
-import { iTask, TaskStatuses, iToDoList } from "./commonTypes";
+import * as React from 'react';
 
-function App() {
-  // I'm trying to do my redux homework with react hooks, and I just watched Ben's video about useReducer.  This is a very naieve POC using useState
-  // and it doesn't really have the features requested by the TODO app: Having 3 lists, separated by status and being able to toggle each TODO's status from a little menu
-  // So, I'm going to check in this crap and then try to use useReducer
+enum ActionType {
+  Increment = 'increment',
+  Decrement = 'decrement',
+}
 
-  const generateDefaultList = () : iToDoList => {
-    let dummies: iTask[] = [{
-      id: "121",
-      title: "change lightbulb out back",
-      description: "May need a ladder",
-      status: TaskStatuses.NotStarted
-    },
-    {
-      id: "122",
-      title: "paint shelf brackets",
-      description: "where is that paint",
-      status: TaskStatuses.NotStarted
-    },
-    {
-      id: "123",
-      title: "Pick tomatoes",
-      description: "We have a lot",
-      status: TaskStatuses.InProgress
-    }
-  ];
+interface IState {
+  count: number;
+}
 
-  let retVal : iToDoList = {
-    notStartedList: dummies.filter(t => t.status === TaskStatuses.NotStarted),
-    inProgressList: dummies.filter(t => t.status === TaskStatuses.InProgress),
-    doneList: dummies.filter(t => t.status === TaskStatuses.Done),
-    };
+interface IAction {
+  type: ActionType;
+  payload: {
+    count: number; 
+  };
+}
 
-    return retVal;
+const initialState: IState = {count: 0};
+
+const reducer: React.Reducer<IState, IAction> = (state, action) => {
+  switch (action.type) {
+    case ActionType.Increment:
+      return {count: state.count + action.payload.count};
+    case ActionType.Decrement:
+      return {count: state.count - action.payload.count};
+    default:
+      throw new Error();
   }
+}
 
-  const listFrom = () => {
-    let inProg = taskList.inProgressList.map(a => <li>{a.title}</li>);
-    return inProg;
-  };
-
-   let [taskList, setTaskList] = useState(generateDefaultList());
-
-   const test = () => {
-    let newState = Object.assign({}, taskList);
-    let taskToMove = taskList.notStartedList.filter(a => a.id === "122")[0];
-    let newNotStarted = taskList.notStartedList.filter(a => a.id !== "122");
-    taskToMove.status = TaskStatuses.InProgress;
-    newState.inProgressList.push(taskToMove);
-    newState.notStartedList = newNotStarted;
-    setTaskList(newState);
-  };
-
-  debugger;
+const App = () => {
+  const [state, dispatch] = React.useReducer<React.Reducer<IState, IAction>>(reducer, initialState);
 
   return (
-    <div className="App">
-      Not started
-       <ul>
-        {
-          taskList.notStartedList.map(a => <li>{a.title}</li>)
-        }
-      </ul>
-      In progress
-      <ul>
-        {listFrom()}
-      </ul>
-      Done
-      <ul>
-        {
-          taskList.doneList.map(a => <li>{a.title}</li>)
-        }
-      </ul>
-      <button onClick={test}>Move one to done</button>
-    </div>
+    <div>
+      <div>Count: {state.count}</div>
+      <button onClick={
+        () => dispatch({type: ActionType.Increment, payload: { count: 1 } })
+      }>+</button>
+      <button onClick={
+        () => dispatch({type: ActionType.Decrement, payload: { count: 1 }})
+      }>-</button>
+    </div>  
   );
-}
+};
 
 export default App;
