@@ -6,42 +6,48 @@ enum ActionType {
 }
 
 interface IState {
-  count: number;
+  enteredNumbers: number[];
 }
 
 interface IAction {
   type: ActionType;
   payload: {
-    count: number; 
+    x: number;
   };
 }
 
-const initialState: IState = {count: 0};
+const initialState: IState = {enteredNumbers: [0]};
 
 const reducer: React.Reducer<IState, IAction> = (state, action) => {
   switch (action.type) {
     case ActionType.Increment:
-      return {count: state.count + action.payload.count};
+      return {enteredNumbers: state.enteredNumbers.concat(action.payload.x)};
     case ActionType.Decrement:
-      return {count: state.count - action.payload.count};
+      return {enteredNumbers: state.enteredNumbers.concat(action.payload.x * 10) };
     default:
       throw new Error();
   }
 }
 
+
+
 const App = () => {
   const [state, dispatch] = React.useReducer<React.Reducer<IState, IAction>>(reducer, initialState);
+  const [candidate, setCandidate] = React.useState(0);
 
   return (
     <div>
-      <div>Count: {state.count}</div>
+      <div>Numbers: {state.enteredNumbers.map(n => <span key={n}>{n},</span>)}</div>
+      <div><input value={candidate} onChange={(e) => {
+        setCandidate((e.target.value) as unknown as number)
+      }} /></div>
       <button onClick={
-        () => dispatch({type: ActionType.Increment, payload: { count: 1 } })
+        () => dispatch({type: ActionType.Increment, payload: { x: candidate } })
       }>+</button>
       <button onClick={
-        () => dispatch({type: ActionType.Decrement, payload: { count: 1 }})
+        () => dispatch({type: ActionType.Decrement, payload: { x: candidate }})
       }>-</button>
-    </div>  
+    </div>
   );
 };
 
