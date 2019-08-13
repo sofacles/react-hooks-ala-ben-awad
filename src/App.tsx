@@ -22,7 +22,23 @@ interface IAction {
   };
 }
 
-const initialState: IState = {allTasks: []};
+const initialState: IState = {allTasks: [
+  {
+    text: "hack the mainframe",
+    id: "987yuj",
+    status: Status["not started"]
+  },
+  {
+    text: "darn socks",
+    id: "37uc",
+    status: Status["not started"]
+  },
+  {
+    text: "pick tomatoes",
+    id: "nfhery",
+    status: Status["in progress"]
+  }
+]};
 
 const reducer: React.Reducer<IState, IAction> = (state, action) => {
   switch (action.type) {
