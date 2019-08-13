@@ -1,29 +1,26 @@
 import * as React from 'react';
 
 enum ActionType {
-  Increment = 'increment',
-  Decrement = 'decrement',
+  Add = 'add',
 }
 
 interface IState {
-  enteredNumbers: number[];
+  allTasks: string[];
 }
 
 interface IAction {
   type: ActionType;
   payload: {
-    x: number;
+    text: string;
   };
 }
 
-const initialState: IState = {enteredNumbers: [0]};
+const initialState: IState = {allTasks: [""]};
 
 const reducer: React.Reducer<IState, IAction> = (state, action) => {
   switch (action.type) {
-    case ActionType.Increment:
-      return {enteredNumbers: state.enteredNumbers.concat(action.payload.x)};
-    case ActionType.Decrement:
-      return {enteredNumbers: state.enteredNumbers.concat(action.payload.x * 10) };
+    case ActionType.Add:
+      return {allTasks: state.allTasks.concat(action.payload.text)};
     default:
       throw new Error();
   }
@@ -33,20 +30,19 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
 
 const App = () => {
   const [state, dispatch] = React.useReducer<React.Reducer<IState, IAction>>(reducer, initialState);
-  const [candidate, setCandidate] = React.useState(0);
+  const [taskText, setTaskText] = React.useState("");
 
   return (
     <div>
-      <div>Numbers: {state.enteredNumbers.map(n => <span key={n}>{n},</span>)}</div>
-      <div><input value={candidate} onChange={(e) => {
-        setCandidate((e.target.value) as unknown as number)
+      <ul>Tasks: {state.allTasks.map(t => <li key={t}>{t}</li>)}</ul>
+      <div><input value={taskText} onChange={(e) => {
+        setTaskText(e.target.value);
       }} /></div>
       <button onClick={
-        () => dispatch({type: ActionType.Increment, payload: { x: candidate } })
-      }>+</button>
-      <button onClick={
-        () => dispatch({type: ActionType.Decrement, payload: { x: candidate }})
-      }>-</button>
+        () => {
+          dispatch({type: ActionType.Add, payload: { text: taskText } });
+        }
+      }>Add task</button>
     </div>
   );
 };
