@@ -4,8 +4,11 @@ enum ActionType {
   Add = 'add',
 }
 
+interface Task {
+  text: string
+}
 interface IState {
-  allTasks: string[];
+  allTasks: Task[];
 }
 
 interface IAction {
@@ -15,12 +18,12 @@ interface IAction {
   };
 }
 
-const initialState: IState = {allTasks: [""]};
+const initialState: IState = {allTasks: []};
 
 const reducer: React.Reducer<IState, IAction> = (state, action) => {
   switch (action.type) {
     case ActionType.Add:
-      return {allTasks: state.allTasks.concat(action.payload.text)};
+      return {allTasks: state.allTasks.concat({ text: action.payload.text })};
     default:
       throw new Error();
   }
@@ -34,7 +37,7 @@ const App = () => {
 
   return (
     <div>
-      <ul>Tasks: {state.allTasks.map(t => <li key={t}>{t}</li>)}</ul>
+      <ul>Tasks: {state.allTasks.map(t => <li key={t.text}>{t.text}</li>)}</ul>
       <div><input value={taskText} onChange={(e) => {
         setTaskText(e.target.value);
       }} /></div>
