@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { Status } from './commonTypes';
+import { Task } from './Task'
 
 enum ActionType {
   Add = 'add',
 }
-
-enum Status { "not started", "in progress", "done"}
 
 interface Task {
   text: string,
@@ -46,7 +46,7 @@ const App = () => {
 
   return (
     <div>
-      <ul>Tasks: {state.allTasks.map(t => <li key={t.id}>{t.text}, {Status[t.status]}</li>)}</ul>
+      <ul>Tasks: {state.allTasks.map(t => <Task text={t.text} status={t.status} key={t.id} />)}</ul>
       <div><input value={taskText} onChange={(e) => {
         setTaskText(e.target.value);
       }} /></div>
