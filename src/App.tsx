@@ -4,9 +4,12 @@ enum ActionType {
   Add = 'add',
 }
 
+enum Status { "not started", "in progress", "done"}
+
 interface Task {
   text: string,
-  id: string
+  id: string,
+  status: Status
 }
 interface IState {
   allTasks: Task[];
@@ -28,6 +31,7 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
       return {allTasks: state.allTasks.concat({
         text: action.payload.text,
         id: now.toISOString(),
+        status: Status["not started"]
        })};
     default:
       throw new Error();
@@ -42,7 +46,7 @@ const App = () => {
 
   return (
     <div>
-      <ul>Tasks: {state.allTasks.map(t => <li key={t.id}>{t.text}</li>)}</ul>
+      <ul>Tasks: {state.allTasks.map(t => <li key={t.id}>{t.text}, {Status[t.status]}</li>)}</ul>
       <div><input value={taskText} onChange={(e) => {
         setTaskText(e.target.value);
       }} /></div>
