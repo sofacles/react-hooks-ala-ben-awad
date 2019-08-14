@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { Status } from './commonTypes';
-import { Task } from './Task'
+import { Status, Task } from './commonTypes';
+import { TaskList } from './TaskList';
 
 enum ActionType {
   Add = 'add',
 }
 
-interface Task {
-  text: string,
-  id: string,
-  status: Status
-}
+
 interface IState {
   allTasks: Task[];
 }
@@ -55,14 +51,13 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
 }
 
 
-
 const App = () => {
   const [state, dispatch] = React.useReducer<React.Reducer<IState, IAction>>(reducer, initialState);
   const [taskText, setTaskText] = React.useState("");
 
   return (
     <div>
-      <ul>Tasks: {state.allTasks.map(t => <Task text={t.text} status={t.status} key={t.id} />)}</ul>
+      <TaskList tasks={state.allTasks} />
       <div><input value={taskText} onChange={(e) => {
         setTaskText(e.target.value);
       }} /></div>

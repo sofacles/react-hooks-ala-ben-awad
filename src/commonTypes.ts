@@ -1,5 +1,7 @@
-enum Status { "not started", "in progress", "done"}
+export enum Status { "not started", "in progress", "done"}
 
-export {
-  Status
+export interface Task {
+  text: string;
+  id: string;
+  status: Status;
 }

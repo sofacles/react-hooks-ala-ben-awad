@@ -5,11 +5,11 @@ interface TaskProps {
   text: string;
   status: Status;
 }
-const Task = (props: TaskProps) => {
+const TaskView = (props: TaskProps) => {
   return <li>{props.text}, {Status[props.status]}</li>;
 };
 
-export 
+export
 {
-  Task
+  TaskView
 };
