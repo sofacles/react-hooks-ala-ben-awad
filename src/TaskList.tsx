@@ -4,10 +4,12 @@ import { TaskView } from "./TaskView";
 
 interface TaskListProps {
   tasks: Task[];
+  heading: string;
 }
 const TaskList = (props: TaskListProps) => {
-  return  <div>
-    <ul>Tasks: {props.tasks.map(t => <TaskView text={t.text} status={t.status} key={t.id} />)}</ul>
+  return  <div className="category-column"> 
+    <h2>{ props.heading }</h2>
+    <ul> {props.tasks.map(t => <TaskView text={t.text} status={t.status} key={t.id} />)}</ul>
   </div>;
 };
 

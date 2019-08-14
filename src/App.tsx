@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Status, Task } from './commonTypes';
 import { TaskList } from './TaskList';
 
+
 enum ActionType {
   Add = 'add',
 }
@@ -56,8 +57,9 @@ const App = () => {
   const [taskText, setTaskText] = React.useState("");
 
   return (
-    <div>
-      <TaskList tasks={state.allTasks} />
+    <div className="broad">
+      <TaskList heading="not started" tasks={state.allTasks.filter(t => t.status === Status["not started"])} />
+      <TaskList heading="in progress" tasks={state.allTasks.filter(t => t.status === Status["in progress"])} />
       <div><input value={taskText} onChange={(e) => {
         setTaskText(e.target.value);
       }} /></div>
