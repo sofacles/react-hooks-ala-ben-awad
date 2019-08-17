@@ -1,17 +1,13 @@
-import * as React from 'react';
-import { Status, Task } from './commonTypes';
+import React from 'react';
+import { IState, Status, Task } from './commonTypes';
 import { TaskList } from './TaskList';
+import { TaskListContext } from './TaskListContext';
 import './App.css';
 
 
 enum ActionType {
   Add = 'add',
   Edit = 'edit',
-}
-
-
-interface IState {
-  allTasks: Task[];
 }
 
 interface IAddAction {
@@ -28,7 +24,6 @@ interface IEditAction {
     newStatus: Status;
   };
 }
-
 
 
 type IAction = IAddAction | IEditAction;
@@ -77,14 +72,16 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
 
 
 const App = () => {
-  const [state, dispatch] = React.useReducer<React.Reducer<IState, IAction>>(reducer, initialState);
+  const [state, dispatch] = React.useReducer(reducer, initialState);
   const [taskText, setTaskText] = React.useState("");
 
   return (
     <div>
       <div className="broad">
-        <TaskList heading="not started" tasks={state.allTasks.filter(t => t.status === Status["not started"])} />
-        <TaskList heading="in progress" tasks={state.allTasks.filter(t => t.status === Status["in progress"])} />
+        <TaskListContext.Provider value={state} >
+          <TaskList heading="not started" tasks={state.allTasks.filter(t => t.status === Status["not started"])} />
+          <TaskList heading="in progress" tasks={state.allTasks.filter(t => t.status === Status["in progress"])} />
+        </TaskListContext.Provider>
       </div>
 
       <div>
