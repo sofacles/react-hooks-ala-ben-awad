@@ -1,48 +1,25 @@
 import React from 'react';
-import { IState, Status, Task } from './commonTypes';
+import { IState, Status, Task, ActionType, IAction } from './commonTypes';
 import { TaskList } from './TaskList';
-import { TaskListContext } from './TaskListContext';
+import { stateContext, dispatchCtx } from './TaskListContext';
 import './App.css';
 
-
-enum ActionType {
-  Add = 'add',
-  Edit = 'edit',
-}
-
-interface IAddAction {
-  type: ActionType.Add;
-  payload: {
-    text: string;
-  };
-}
-
-interface IEditAction {
-  type: ActionType.Edit;
-  payload: {
-    id: string;
-    newStatus: Status;
-  };
-}
-
-
-type IAction = IAddAction | IEditAction;
 
 const initialState: IState = {allTasks: [
   {
     text: "hack the mainframe",
     id: "987yuj",
-    status: Status["not started"]
+    status: Status.NotStarted
   },
   {
     text: "darn socks",
     id: "37uc",
-    status: Status["not started"]
+    status: Status.NotStarted
   },
   {
     text: "pick tomatoes",
     id: "nfhery",
-    status: Status["not started"]
+    status: Status.NotStarted
   }
 ]};
 
@@ -53,7 +30,7 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
       return {allTasks: state.allTasks.concat({
         text: action.payload.text,
         id: now.toISOString(),
-        status: Status["not started"]
+        status: Status.NotStarted
        })};
 
     case ActionType.Edit:
@@ -78,10 +55,12 @@ const App = () => {
   return (
     <div>
       <div className="broad">
-        <TaskListContext.Provider value={state} >
-          <TaskList heading="not started" tasks={state.allTasks.filter(t => t.status === Status["not started"])} />
-          <TaskList heading="in progress" tasks={state.allTasks.filter(t => t.status === Status["in progress"])} />
-        </TaskListContext.Provider>
+        <dispatchCtx.Provider value={dispatch} >
+          <stateContext.Provider value={state}>
+            <TaskList heading="not started" status={Status.NotStarted}  />
+            <TaskList heading="in progress" status={Status.InProgress}  />
+          </stateContext.Provider>
+        </dispatchCtx.Provider>
       </div>
 
       <div>
@@ -97,7 +76,7 @@ const App = () => {
           () => {
             dispatch({type: ActionType.Edit, payload: { 
               id: "nfhery",
-              newStatus: Status["in progress"] 
+              newStatus: Status.InProgress 
             }});
           }
         }>Move nfhery to in Progress</button>
