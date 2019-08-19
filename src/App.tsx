@@ -1,27 +1,10 @@
 import React from 'react';
-import { IState, Status, Task, ActionType, IAction } from './commonTypes';
+import { initialState, IState, Status, Task, ActionType, IAction } from './commonTypes';
 import { TaskList } from './TaskList';
 import { stateContext, dispatchCtx } from './TaskListContext';
 import './App.css';
 
 
-const initialState: IState = {allTasks: [
-  {
-    text: "hack the mainframe",
-    id: "987yuj",
-    status: Status.NotStarted
-  },
-  {
-    text: "darn socks",
-    id: "37uc",
-    status: Status.NotStarted
-  },
-  {
-    text: "pick tomatoes",
-    id: "nfhery",
-    status: Status.NotStarted
-  }
-]};
 
 const reducer: React.Reducer<IState, IAction> = (state, action) => {
   switch (action.type) {
@@ -34,18 +17,22 @@ const reducer: React.Reducer<IState, IAction> = (state, action) => {
        })};
 
     case ActionType.Edit:
+      
      let existingTask = state.allTasks.filter(t => t.id === action.payload.id)[0];
-     let newTask: Task = Object.create(existingTask);
+     let newTask: Task = {...existingTask};
      newTask.status = action.payload.newStatus;
-      return {allTasks: [ ...state.allTasks]
+     let retVal = {
+       allTasks: [ ...state.allTasks]
       .filter(a => a.id !== action.payload.id )
       .concat(newTask)
-    };
+     };
+     
+     return retVal;
       
     default:
       throw new Error("Wie koenttest du?");
   }
-}
+};
 
 
 const App = () => {
@@ -59,6 +46,7 @@ const App = () => {
           <stateContext.Provider value={state}>
             <TaskList heading="not started" status={Status.NotStarted}  />
             <TaskList heading="in progress" status={Status.InProgress}  />
+            <TaskList heading="done" status={Status.Done}  />
           </stateContext.Provider>
         </dispatchCtx.Provider>
       </div>

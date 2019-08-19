@@ -47,8 +47,8 @@ export const initialState: IState = {allTasks: [
     status: Status.NotStarted
   },
   {
-    text: "pick tomatoes",
+    text: "pick plums",
     id: "nfhery",
-    status: Status.NotStarted
+    status: Status.InProgress
   }
 ]};
