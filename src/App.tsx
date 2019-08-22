@@ -50,7 +50,6 @@ const App = () => {
           </stateContext.Provider>
         </dispatchCtx.Provider>
       </div>
-
       <div>
         <input value={taskText} onChange={(e) => {
           setTaskText(e.target.value);
@@ -60,14 +59,6 @@ const App = () => {
             dispatch({type: ActionType.Add, payload: { text: taskText } });
           }
         }>Add task</button>
-         <button onClick={
-          () => {
-            dispatch({type: ActionType.Edit, payload: { 
-              id: "nfhery",
-              newStatus: Status.InProgress 
-            }});
-          }
-        }>Move nfhery to in Progress</button>
       </div>
     </div>
   );
