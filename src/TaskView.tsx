@@ -12,10 +12,17 @@ const TaskView = (props: TaskProps) => {
   const dispatchContext = useContext(dispatchCtx);
   let stateFromContext = React.useContext(stateContext);
   let ourTask = stateFromContext.allTasks.filter(a => a.id === props.id)[0];
+  const options: JSX.Element[] = [];
+  for(const status in Status){
+    options.push(<option 
+      value={Status[status]}
+      key={Status[status]}>
+        {Status[status]}
+      </option>);
+  }
  
   return <li>{ourTask.text}, {ourTask.status}
     <select onChange={(e) => {
-      console.log("how do I loop through an enum?");
         let accion: IEditAction = {
           type: ActionType.Edit,
           payload : {
@@ -26,24 +33,7 @@ const TaskView = (props: TaskProps) => {
         dispatchContext(accion);
       }} value={ourTask.status}
     >
-      <option 
-        value="not started" 
-        key={Status.NotStarted}
-      >
-        not started
-      </option>
-      <option 
-        value="in progress" 
-        key={Status.InProgress}
-      >
-        in progress
-      </option>
-      <option 
-        value="done"
-        key={Status.Done}
-      >
-        done
-      </option>
+     {options}
     </select>
   </li>;
 };
